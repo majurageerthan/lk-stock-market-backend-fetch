@@ -11,5 +11,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'max-len': ['error', { code: 200 }],
+    'no-unused-vars': 'warn',
   },
 };

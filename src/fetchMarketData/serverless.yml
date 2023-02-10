@@ -1,9 +1,10 @@
-service: lk-stock-market-backend-fetch
+service: lk-stock-market
 frameworkVersion: '3'
 
 provider:
   name: aws
   runtime: nodejs18.x
+  region: ap-south-1
 
 custom:
   webpack:
@@ -16,11 +17,11 @@ package:
   individually: true
 
 functions:
-  fetchMarketDataFromStockMarket:
+  fetchStockDataAndUpdate:
     handler: index.run
     events:
       # Invoke Lambda function every minute
-      - schedule: rate(1 minute)
+      - schedule: rate(6 hours)
   # cronHandler:
   #   handler: index.run
   #   events:

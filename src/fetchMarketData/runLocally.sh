@@ -2,7 +2,7 @@
 # git config user.name
 # git config user.email
 
-serverless invoke local --function fetchMarketDataFromStockMarket
+serverless invoke local --function fetchStockDataAndUpdate
 
 
 # git config user.name "majurageerthan"

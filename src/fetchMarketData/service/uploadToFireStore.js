@@ -1,6 +1,6 @@
 import { getFirestore, Timestamp, FieldValue } from 'firebase-admin/firestore';
 
-const uploadToFireStore = async (marketData) => {
+const uploadToFireStore = async (marketData, index) => {
   const db = getFirestore();
 
   const stockMarketRef = db.collection('stock-market-lk').doc(`${marketData.id}`);
@@ -11,7 +11,7 @@ const uploadToFireStore = async (marketData) => {
   }, { merge: true });
 
   await stockMarketMetaRef.set(marketData, { merge: true });
-  console.log(`Uploaded: ${marketData.name}, price: ${marketData.price}`);
+  console.log(`${index} Uploaded: ${marketData.name}, price: ${marketData.price}`);
 };
 
 export { uploadToFireStore };

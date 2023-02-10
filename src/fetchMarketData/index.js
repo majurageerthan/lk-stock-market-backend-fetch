@@ -5,7 +5,7 @@ const serviceAccount = require('../keys/lk-stock-market-firebase-adminsdk-i92xv-
 
 const run = async (event, context) => {
   initializeApp({ credential: cert(serviceAccount) });
-  extractAndUploadMarketDataToFirebase();
+  await extractAndUploadMarketDataToFirebase();
 };
 
 export { run };
