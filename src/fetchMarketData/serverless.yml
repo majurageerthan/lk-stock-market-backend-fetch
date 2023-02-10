@@ -12,6 +12,9 @@ custom:
     packager: 'npm' # Packager that will be used to package your external modules
     # excludeFiles: src/**/*.test.js # Provide a glob for files to ignore
     
+package:
+  individually: true
+
 functions:
   fetchMarketDataFromStockMarket:
     handler: index.run
