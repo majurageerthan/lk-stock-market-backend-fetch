@@ -36,16 +36,8 @@ const getMarketDataFromCSE = async () => {
     return response?.data?.reqByMarketcap;
   } catch (error) {
     console.error(error);
-    return {};
+    return [];
   }
 };
-
-// axios(config)
-//   .then((response) => {
-//     console.log(JSON.stringify(response.data));
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
 
 export default getMarketDataFromCSE;
