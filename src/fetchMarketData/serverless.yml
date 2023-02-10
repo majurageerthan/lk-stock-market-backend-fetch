@@ -5,6 +5,13 @@ provider:
   name: aws
   runtime: nodejs18.x
 
+custom:
+  webpack:
+    webpackConfig: ../../webpack.config.cjs # Name of webpack configuration file
+    includeModules: false # Node modules configuration for packaging
+    packager: 'npm' # Packager that will be used to package your external modules
+    # excludeFiles: src/**/*.test.js # Provide a glob for files to ignore
+    
 functions:
   fetchMarketDataFromStockMarket:
     handler: index.run
@@ -18,5 +25,6 @@ functions:
   #     - schedule: cron(0/2 * ? * MON-FRI *)
 
 plugins:
+  - serverless-webpack
   - serverless-offline
   - serverless-local-schedule

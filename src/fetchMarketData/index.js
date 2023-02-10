@@ -1,6 +1,7 @@
+import buildMarketData from './buildMarketData.js' ;
+
 const run = async (event, context) => {
-  const time = new Date();
-  console.log(`Your cron function "${context.functionName}" ran at ${time}`);
+  buildMarketData();
 };
 
-module.exports = { run };
+export { run };
