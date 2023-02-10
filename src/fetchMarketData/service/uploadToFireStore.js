@@ -11,6 +11,7 @@ const uploadToFireStore = async (marketData) => {
   }, { merge: true });
 
   await stockMarketMetaRef.set(marketData, { merge: true });
+  console.log(`Uploaded: ${marketData.name}, price: ${marketData.price}`);
 };
 
 export { uploadToFireStore };
