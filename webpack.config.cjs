@@ -9,6 +9,9 @@ module.exports = {
   externals: [
     /aws-sdk/, // Available on AWS Lambda
   ],
+  optimization: {
+    minimize: false,
+  },
   module: {
     rules: [
       {
@@ -17,13 +20,11 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            "presets": [
-              ["@babel/preset-env", {
-                "targets": {
-                  "node": "18"
-                }
-              }]
-            ]
+            presets: [['@babel/preset-env', {
+              targets: {
+                node: '18',
+              },
+            }]],
           },
         },
         resolve: {
