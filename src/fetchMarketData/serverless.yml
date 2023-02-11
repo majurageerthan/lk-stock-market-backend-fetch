@@ -1,18 +1,23 @@
 service: lk-stock-market
-frameworkVersion: '3'
+frameworkVersion: "3"
+useDotenv: true
 
 provider:
   name: aws
-  runtime: nodejs18.x
   region: ap-south-1
+  architecture: arm64
+  memorySize: 512 # optional, in MB, default is 1024
+  runtime: nodejs18.x
+  timeout: 10 # optional, in seconds, default is 6
+  versionFunctions: false # optional, default is true
 
 custom:
   webpack:
     webpackConfig: ../../webpack.config.cjs # Name of webpack configuration file
     includeModules: false # Node modules configuration for packaging
-    packager: 'npm' # Packager that will be used to package your external modules
+    packager: "npm" # Packager that will be used to package your external modules
     # excludeFiles: src/**/*.test.js # Provide a glob for files to ignore
-    
+
 package:
   individually: true
 
@@ -20,13 +25,9 @@ functions:
   fetchStockDataAndUpdate:
     handler: index.run
     events:
-      # Invoke Lambda function every minute
-      - schedule: rate(6 hours)
-  # cronHandler:
-  #   handler: index.run
-  #   events:
-  #     # Invoke Lambda function every 2nd minute from Mon-Fri
-  #     - schedule: cron(0/2 * ? * MON-FRI *)
+      - schedule: rate(1 minute) # Invoke Lambda function every minute
+    environment:
+      S3_BUCKET: ${env:S3_BUCKET}
 
 plugins:
   - serverless-webpack

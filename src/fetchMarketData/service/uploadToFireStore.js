@@ -1,6 +1,11 @@
+// eslint-disable-next-line import/no-unresolved
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 
 const uploadToFireStore = async (marketData, index) => {
+  if (marketData.price === 0) {
+    return;
+  }
+
   const db = getFirestore();
 
   const stockMarketRef = db.collection('stock-market-lk').doc(`${marketData.id}`);
@@ -14,4 +19,4 @@ const uploadToFireStore = async (marketData, index) => {
   // console.log(`${index} Uploaded: ${marketData.name}, price: ${marketData.price}`);
 };
 
-export { uploadToFireStore };
+export default uploadToFireStore;
