@@ -25,7 +25,7 @@ functions:
   fetchStockDataAndUpdate:
     handler: index.run
     events:
-      - schedule: rate(1 minute) # Invoke Lambda function every minute
+      - schedule: rate(6 hours) # Invoke Lambda function every minute
     environment:
       S3_BUCKET: ${env:S3_BUCKET}
 

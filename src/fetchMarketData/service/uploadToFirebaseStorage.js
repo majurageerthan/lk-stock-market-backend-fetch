@@ -6,7 +6,7 @@ const uploadToFirebaseStorage = async (data, jsonFileNameToSave) => {
   const file = bucket.file(`${FIREBASE_STORAGE_STOCK_DATA_FOLDER}/${jsonFileNameToSave}.json`);
   const contents = JSON.stringify(data);
   await file.save(contents);
-  console.log('uploadToFirebaseStorage');
+  console.log(`uploadToFirebaseStorage: ${jsonFileNameToSave}`);
 };
 
 // DD-mm-yyyy_hh_mm_ss
