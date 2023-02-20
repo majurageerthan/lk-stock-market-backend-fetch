@@ -25,7 +25,7 @@ functions:
   fetchStockDataAndUpdate:
     handler: index.run
     events:
-      - schedule: cron(10 10-13 * * 1-5) # Invoke Lambda function Mon to fry from 10 to 13, eg: 10.10, 11.10, 12.10
+      - schedule: cron(35 4-7 ? * 1-5 *) # Invoke Lambda function Mon to friday from 10 to 13, eg: 10.10, 11.10, 12.10
       # - schedule: rate(6 hours)
 
     environment:
