@@ -7,6 +7,8 @@ const CSE_WEB_SITE_DATA = JSON.stringify({
 
 export const MAIN_FIRE_STORE_DB = 'stock-market-lk';
 
+export const MAIN_FIRE_STORE_DB_TEST = 'stock-market-lk-test';
+
 export const FIREBASE_MAIN_STORAGE_STOCK_BUCKET = 'gs://lk-stock-market.appspot.com/';
 
 export const FIREBASE_STORAGE_STOCK_DATA_FOLDER = 'lk-stock-market-data';

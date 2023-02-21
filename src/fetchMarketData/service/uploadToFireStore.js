@@ -1,24 +1,55 @@
 // eslint-disable-next-line import/no-unresolved
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
+import LOGGER from '../../util/logger';
+import { MAIN_FIRE_STORE_DB } from '../../util/constants';
+
+const uploadMarketPrice = async (marketData, fireStoreRef, timeStampInMillis) => {
+  if (marketData?.price && marketData?.price !== 0) {
+    await fireStoreRef.set({ [timeStampInMillis]: marketData.price }, { merge: true });
+  }
+};
+
+const uploadMarketHighPrice = async (marketData, fireStoreRef, timeStampInMillis) => {
+  if (marketData?.high && marketData?.high !== 0) {
+    await fireStoreRef.set({ [timeStampInMillis]: marketData.high }, { merge: true });
+  }
+};
+
+const uploadMarketLowPrice = async (marketData, fireStoreRef, timeStampInMillis) => {
+  if (marketData?.low && marketData?.low !== 0) {
+    await fireStoreRef.set({ [timeStampInMillis]: marketData.low }, { merge: true });
+  }
+};
+
+const executeAllPromises = async (promises) => {
+  const results = await Promise.allSettled(promises);
+  for (const result of results) {
+    if (result.status === 'fulfilled') {
+      LOGGER.debug(`executeAllPromises: ${result.status}`);
+    } else {
+      LOGGER.error(result?.reason);
+    }
+  }
+};
 
 const uploadToFireStore = async (marketData, index) => {
-  if (marketData.price === 0) {
-    return;
-  }
-
   const db = getFirestore();
+  const timeStampInMillis = Timestamp.now().toMillis();
 
-  const stockMarketRef = db.collection('stock-market-lk').doc(`${marketData.id}`);
-  const stockMarketMetaRef = stockMarketRef.collection(marketData.name).doc('metaData');
+  const stockMarketRef = db.collection(MAIN_FIRE_STORE_DB).doc(`${marketData.id}`);
+  const stockMarketNameCollectionRef = stockMarketRef.collection(marketData.name);
+  const stockMarketMetaDocumentRef = stockMarketNameCollectionRef.doc('metaData');
+  const stockMarketHighPriceDocumentRef = stockMarketNameCollectionRef.doc('highPrice');
+  const stockMarketLowPriceDocumentRef = stockMarketNameCollectionRef.doc('lowPrice');
 
-  if (marketData?.price && marketData?.price !== 0) {
-    await stockMarketRef.set({
-      [Timestamp.now().toMillis()]: marketData.price,
-    }, { merge: true });
-  }
+  const uploadMarketPricePromise = uploadMarketPrice(marketData, stockMarketRef, timeStampInMillis);
+  const stockMarketMetaDocumentUpdatePromise = stockMarketMetaDocumentRef.set(marketData, { merge: true });
+  const uploadMarketHighPricePromise = uploadMarketHighPrice(marketData, stockMarketHighPriceDocumentRef, timeStampInMillis);
+  const uploadMarketLowPricePromise = uploadMarketLowPrice(marketData, stockMarketLowPriceDocumentRef, timeStampInMillis);
 
-  await stockMarketMetaRef.set(marketData, { merge: true });
-  // console.log(`${index} Uploaded: ${marketData.name}, price: ${marketData.price}`);
+  const uploadPromises = [uploadMarketPricePromise, stockMarketMetaDocumentUpdatePromise, uploadMarketHighPricePromise, uploadMarketLowPricePromise];
+  await executeAllPromises(uploadPromises);
+  LOGGER.debug(`${index} Uploaded: ${marketData.name}, price: ${marketData.price}`);
 };
 
 export default uploadToFireStore;
