@@ -13,5 +13,6 @@ module.exports = {
   rules: {
     'max-len': ['error', { code: 200 }],
     'no-unused-vars': 'warn',
+    'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
   },
 };

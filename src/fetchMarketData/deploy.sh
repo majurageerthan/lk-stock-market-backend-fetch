@@ -1,6 +1,7 @@
 export AWS_ACCESS_KEY_ID=AKIASJAOCGSKSZDLRSPC
 export AWS_SECRET_ACCESS_KEY=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
 # AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are now available for serverless to use
+rm -rf .serverless/
 serverless deploy --stage production
 # serverless remove --stage production
 

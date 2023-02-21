@@ -3,6 +3,7 @@ import getMarketDataFromCSE from './service/getMarketDataFromCSE';
 import uploadToFireStore from './service/uploadToFireStore';
 import uploadToFirebaseStorage from './service/uploadToFirebaseStorage';
 import { getCurrentReadableFileNameTimeStamp } from '../util/helpers';
+import LOGGER from '../util/logger';
 
 const extractAndUploadMarketDataToFirebase = async () => {
   const marketData = await getMarketDataFromCSE();
@@ -10,7 +11,7 @@ const extractAndUploadMarketDataToFirebase = async () => {
   uploadPromiseArray.push(uploadToFirebaseStorage(marketData, getCurrentReadableFileNameTimeStamp()));
   if (uploadPromiseArray?.length) {
     await Promise.all(uploadPromiseArray);
-    console.log(`Completed uploading size: ${marketData.length}`);
+    LOGGER.info(`Completed uploading size: ${marketData.length}`);
   }
 
   // await uploadToFirebaseStorage(marketData, getCurrentReadableFileNameTimeStamp());

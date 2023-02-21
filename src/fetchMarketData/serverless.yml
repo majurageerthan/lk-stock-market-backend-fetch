@@ -29,7 +29,8 @@ functions:
       # - schedule: rate(6 hours)
 
     environment:
-      S3_BUCKET: ${env:S3_BUCKET}
+      LOG_LEVEL: ${env:LOG_LEVEL}
+      ENVIRONMENT: ${env:ENVIRONMENT}
 
 plugins:
   - serverless-webpack
