@@ -8,7 +8,7 @@ provider:
   architecture: arm64
   memorySize: 512 # optional, in MB, default is 1024
   runtime: nodejs18.x
-  timeout: 10 # optional, in seconds, default is 6
+  timeout: 20 # optional, in seconds, default is 6
   versionFunctions: false # optional, default is true
 
 custom:
