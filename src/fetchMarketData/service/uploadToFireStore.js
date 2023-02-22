@@ -2,6 +2,7 @@
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 import LOGGER from '../../util/logger';
 import { MAIN_FIRE_STORE_DB } from '../../util/constants';
+import { getReadableCurrentDate } from '../../util/helpers';
 
 const uploadMarketPrice = async (marketData, fireStoreRef, timeStampInMillis) => {
   if (marketData?.price && marketData?.price !== 0) {
@@ -9,15 +10,15 @@ const uploadMarketPrice = async (marketData, fireStoreRef, timeStampInMillis) =>
   }
 };
 
-const uploadMarketHighPrice = async (marketData, fireStoreRef, timeStampInMillis) => {
+const uploadMarketHighPrice = async (marketData, fireStoreRef, currentDateString) => {
   if (marketData?.high && marketData?.high !== 0) {
-    await fireStoreRef.set({ [timeStampInMillis]: marketData.high }, { merge: true });
+    await fireStoreRef.set({ [currentDateString]: marketData.high }, { merge: true });
   }
 };
 
-const uploadMarketLowPrice = async (marketData, fireStoreRef, timeStampInMillis) => {
+const uploadMarketLowPrice = async (marketData, fireStoreRef, currentDateString) => {
   if (marketData?.low && marketData?.low !== 0) {
-    await fireStoreRef.set({ [timeStampInMillis]: marketData.low }, { merge: true });
+    await fireStoreRef.set({ [currentDateString]: marketData.low }, { merge: true });
   }
 };
 
@@ -35,6 +36,7 @@ const executeAllPromises = async (promises) => {
 const uploadToFireStore = async (marketData, index) => {
   const db = getFirestore();
   const timeStampInMillis = Timestamp.now().toMillis();
+  const currentDateString = getReadableCurrentDate();
 
   const stockMarketRef = db.collection(MAIN_FIRE_STORE_DB).doc(`${marketData.id}`);
   const stockMarketNameCollectionRef = stockMarketRef.collection(marketData.name);
@@ -44,8 +46,8 @@ const uploadToFireStore = async (marketData, index) => {
 
   const uploadMarketPricePromise = uploadMarketPrice(marketData, stockMarketRef, timeStampInMillis);
   const stockMarketMetaDocumentUpdatePromise = stockMarketMetaDocumentRef.set(marketData, { merge: true });
-  const uploadMarketHighPricePromise = uploadMarketHighPrice(marketData, stockMarketHighPriceDocumentRef, timeStampInMillis);
-  const uploadMarketLowPricePromise = uploadMarketLowPrice(marketData, stockMarketLowPriceDocumentRef, timeStampInMillis);
+  const uploadMarketHighPricePromise = uploadMarketHighPrice(marketData, stockMarketHighPriceDocumentRef, currentDateString);
+  const uploadMarketLowPricePromise = uploadMarketLowPrice(marketData, stockMarketLowPriceDocumentRef, currentDateString);
 
   const uploadPromises = [uploadMarketPricePromise, stockMarketMetaDocumentUpdatePromise, uploadMarketHighPricePromise, uploadMarketLowPricePromise];
   await executeAllPromises(uploadPromises);
