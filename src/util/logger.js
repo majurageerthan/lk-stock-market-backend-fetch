@@ -1,5 +1,15 @@
 import { createLogger, format as _format, transports as _transports } from 'winston';
 
+// const levels = {
+//   error: 0,
+//   warn: 1,
+//   info: 2,
+//   http: 3,
+//   verbose: 4,
+//   debug: 5,
+//   silly: 6
+// };
+
 const LOGGER = createLogger({
   level: process.env.LOG_LEVEL ?? 'error',
   format: _format.simple(),

@@ -67,7 +67,7 @@ const uploadToFireStore = async (marketData, index) => {
   ];
 
   await executeAllPromises(uploadPromises);
-  LOGGER.debug(`${index} Uploaded: ${marketData.name}, price: ${marketData.price}`);
+  LOGGER.verbose(`${index} Uploaded: ${marketData.name}, price: ${marketData.price}`);
 };
 
 export default uploadToFireStore;
