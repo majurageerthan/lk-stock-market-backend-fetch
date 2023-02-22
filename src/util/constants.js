@@ -5,9 +5,17 @@ const CSE_WEB_SITE_DATA = JSON.stringify({
   },
 });
 
-export const MAIN_FIRE_STORE_DB = 'stock-market-lk';
+export const DEV = 'DEV';
+
+export const PROD = 'PROD';
+
+export const IS_DEV_ENVIRONMENT = process.env.ENVIRONMENT === DEV;
+
+export const FIRE_STORE_DB_PROD = 'stock-market-lk';
 
 export const MAIN_FIRE_STORE_DB_TEST = 'stock-market-lk-test';
+
+export const MAIN_FIRE_STORE_DB = IS_DEV_ENVIRONMENT ? MAIN_FIRE_STORE_DB_TEST : FIRE_STORE_DB_PROD;
 
 export const FIREBASE_MAIN_STORAGE_STOCK_BUCKET = 'gs://lk-stock-market.appspot.com/';
 
