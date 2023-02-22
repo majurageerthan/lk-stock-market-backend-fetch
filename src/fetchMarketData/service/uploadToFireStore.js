@@ -4,22 +4,30 @@ import LOGGER from '../../util/logger';
 import { MAIN_FIRE_STORE_DB } from '../../util/constants';
 import { getReadableCurrentDate } from '../../util/helpers';
 
-const uploadMarketPrice = async (marketData, fireStoreRef, timeStampInMillis) => {
-  if (marketData?.price && marketData?.price !== 0) {
-    await fireStoreRef.set({ [timeStampInMillis]: marketData.price }, { merge: true });
+const uploadToFireStoreDb = async (marketData, fireStoreRef, key, parameterOfValue) => {
+  if (marketData?.[parameterOfValue] && marketData?.[parameterOfValue] !== 0) {
+    await fireStoreRef.set({ [key]: marketData[parameterOfValue] }, { merge: true });
   }
+};
+
+const uploadMarketPrice = async (marketData, fireStoreRef, timeStampInMillis) => {
+  await uploadToFireStoreDb(marketData, fireStoreRef, timeStampInMillis, 'price');
 };
 
 const uploadMarketHighPrice = async (marketData, fireStoreRef, currentDateString) => {
-  if (marketData?.high && marketData?.high !== 0) {
-    await fireStoreRef.set({ [currentDateString]: marketData.high }, { merge: true });
-  }
+  await uploadToFireStoreDb(marketData, fireStoreRef, currentDateString, 'high');
 };
 
 const uploadMarketLowPrice = async (marketData, fireStoreRef, currentDateString) => {
-  if (marketData?.low && marketData?.low !== 0) {
-    await fireStoreRef.set({ [currentDateString]: marketData.low }, { merge: true });
-  }
+  await uploadToFireStoreDb(marketData, fireStoreRef, currentDateString, 'low');
+};
+
+const uploadMarketShareVolume = async (marketData, fireStoreRef, currentDateString) => {
+  await uploadToFireStoreDb(marketData, fireStoreRef, currentDateString, 'sharevolume');
+};
+
+const uploadMarketTradeVolume = async (marketData, fireStoreRef, currentDateString) => {
+  await uploadToFireStoreDb(marketData, fireStoreRef, currentDateString, 'tradevolume');
 };
 
 const executeAllPromises = async (promises) => {
@@ -43,13 +51,21 @@ const uploadToFireStore = async (marketData, index) => {
   const stockMarketMetaDocumentRef = stockMarketNameCollectionRef.doc('metaData');
   const stockMarketHighPriceDocumentRef = stockMarketNameCollectionRef.doc('highPrice');
   const stockMarketLowPriceDocumentRef = stockMarketNameCollectionRef.doc('lowPrice');
+  const stockMarketShareVolumeDocumentRef = stockMarketNameCollectionRef.doc('shareVolume');
+  const stockMarketTradeVolumeDocumentRef = stockMarketNameCollectionRef.doc('tradeVolume');
 
   const uploadMarketPricePromise = uploadMarketPrice(marketData, stockMarketRef, timeStampInMillis);
   const stockMarketMetaDocumentUpdatePromise = stockMarketMetaDocumentRef.set(marketData, { merge: true });
   const uploadMarketHighPricePromise = uploadMarketHighPrice(marketData, stockMarketHighPriceDocumentRef, currentDateString);
   const uploadMarketLowPricePromise = uploadMarketLowPrice(marketData, stockMarketLowPriceDocumentRef, currentDateString);
+  const uploadMarketShareVolumePromise = uploadMarketShareVolume(marketData, stockMarketShareVolumeDocumentRef, currentDateString);
+  const uploadMarketTradeVolumePromise = uploadMarketTradeVolume(marketData, stockMarketTradeVolumeDocumentRef, currentDateString);
 
-  const uploadPromises = [uploadMarketPricePromise, stockMarketMetaDocumentUpdatePromise, uploadMarketHighPricePromise, uploadMarketLowPricePromise];
+  const uploadPromises = [
+    uploadMarketPricePromise, stockMarketMetaDocumentUpdatePromise, uploadMarketHighPricePromise,
+    uploadMarketLowPricePromise, uploadMarketShareVolumePromise, uploadMarketTradeVolumePromise,
+  ];
+
   await executeAllPromises(uploadPromises);
   LOGGER.debug(`${index} Uploaded: ${marketData.name}, price: ${marketData.price}`);
 };
