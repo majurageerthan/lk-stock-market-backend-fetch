@@ -1,4 +1,3 @@
-import downloadFromFirebaseStorage from './service/downloadFromFirebaseStorage';
 import getMarketDataFromCSE from './service/getMarketDataFromCSE';
 import uploadToFireStore from './service/uploadToFireStore';
 import uploadToFirebaseStorage from './service/uploadToFirebaseStorage';
@@ -13,9 +12,6 @@ const extractAndUploadMarketDataToFirebase = async () => {
     await Promise.all(uploadPromiseArray);
     LOGGER.info(`Completed uploading size: ${marketData.length}`);
   }
-
-  // await uploadToFirebaseStorage(marketData, getCurrentReadableFileNameTimeStamp());
-  // await downloadFromFirebaseStorage('08032022');
 };
 
 export default extractAndUploadMarketDataToFirebase;

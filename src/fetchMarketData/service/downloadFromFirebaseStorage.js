@@ -14,10 +14,3 @@ const downloadFromFirebaseStorage = async (jsonFileNameToDownload) => {
 };
 
 export default downloadFromFirebaseStorage;
-
-// const [files] = await bucket.getFiles();
-
-// console.log('Files:');
-// files.forEach((filex) => {
-//   console.log(filex.name);
-// });

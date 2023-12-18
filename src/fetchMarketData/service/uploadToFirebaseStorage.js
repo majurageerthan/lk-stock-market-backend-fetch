@@ -15,6 +15,4 @@ const uploadToFirebaseStorage = async (data, jsonFileNameToSave) => {
   LOGGER.info(`uploadToFirebaseStorage: ${jsonFileNameToSave}.json`);
 };
 
-// DD-mm-yyyy_hh_mm_ss
-
 export default uploadToFirebaseStorage;
